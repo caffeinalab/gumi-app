@@ -392,11 +392,10 @@ module.exports = function () {
 	function render() {
 		var template = _.template(document.getElementById('home-template').innerText);
 		el.innerHTML = template({
-			title: "Add user",
-			label: "ADD"
+			title: "Add user"
 		});
 		requestAnimationFrame(function () {
-			[].slice.call(document.querySelectorAll('input.input__field')).forEach(function (inputEl) {
+			[].slice.call(el.querySelectorAll('input.input__field')).forEach(function (inputEl) {
 				// in case the input is already filled..
 				if (inputEl.value.trim() !== '') {
 					inputEl.parentNode.classList.add('input--filled');
@@ -493,8 +492,7 @@ module.exports = function () {
 	function render() {
 		var template = _.template(document.getElementById('home-template').innerText);
 		var opts = {
-			title: "edit profile",
-			label: "SAVE"
+			title: "edit profile"
 		};
 
 		if (App.currentExtra) {
@@ -502,6 +500,7 @@ module.exports = function () {
 			if (settings[App.currentExtra]) {
 				opts.username = settings[App.currentExtra].username;
 				opts.email = settings[App.currentExtra].email;
+				opts.label = settings[App.currentExtra].label;
 			}
 		}
 		el.innerHTML = template(opts);
@@ -582,8 +581,8 @@ module.exports = function () {
 	}
 
 	function fade(type, time, cb) {
-		var toAnimate = el.getElementsByClassName('content');
-		toAnimate = toAnimate.length ? toAnimate[0] : el;
+		var toAnimate = el; //.getElementsByClassName('content');
+		// toAnimate = toAnimate.length ? toAnimate[0] : el
 
 		var startData = {
 			opacity: toAnimate.style.opacity || parseFloat(window.getComputedStyle(toAnimate, null).opacity)
@@ -649,7 +648,7 @@ function goto(view) {
 			}
 			if (next) {
 				next.render();
-				translate('out', 300, function () {
+				translate('out', 200, function () {
 					body.append(next.el);
 					next.transitionIn();
 					addLinkEvent();

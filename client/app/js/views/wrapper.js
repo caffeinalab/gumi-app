@@ -32,7 +32,7 @@ function goto(view){
 			}
 			if(next){
 				next.render();
-				translate('out', 300, () => {
+				translate('out', 200, () => {
 					body.append( next.el );
 					next.transitionIn();
 					addLinkEvent();

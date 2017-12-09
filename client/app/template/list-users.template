@@ -1,16 +1,166 @@
-<div class="table">
-	<div class="cell">
-		<div class="content">
-			<h1>MANAGE YOUR PROFILES</h1>
-			<div class="list">
-				<div class="singleUser _internalLink" data-state="edit-profile" data-extra="personal">
-					<span>Personal</span>
-					<small>EDIT</small>
-				</div>
-			</div>
-			<div class="button _internalLink" data-state="new-profile">
-				<span>ADD NEW PROFILE</span>
-			</div>
-		</div>
+<h1>MANAGE YOUR PROFILES</h1>
+<div class="content">
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
 	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+	<div class="singleUser">
+		<span>Personal</span>
+		<small class="select">SELECT</small>
+		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
+	</div>
+</div>
+<div class="button _bottom _internalLink" data-state="new-profile">
+	<span>ADD NEW PROFILE</span>
 </div>

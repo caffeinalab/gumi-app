@@ -1,10 +1,11 @@
 
 .input {
 	position: relative;
-	z-index: 1;
 	display: inline-block;
-    font-size: 25px;
-	width: calc(100% - 2em);
+	width: ~"calc(100% - 20px)";
+	margin-left: 10px;
+	z-index: 1;
+	font-size: 15px;
 	vertical-align: top;
 }
 
@@ -110,8 +111,8 @@
 .input__field--nao:focus + .input__label--nao,
 .input--filled .input__label--nao {
 	color: #333;
-	-webkit-transform: translate3d(0, -1.25em, 0) scale3d(0.75, 0.75, 1);
-	transform: translate3d(0, -1.25em, 0) scale3d(0.75, 0.75, 1);
+	-webkit-transform: translate3d(0, -1.95em, 0) scale3d(0.85, 0.85, 1);
+	transform: translate3d(0, -1.95em, 0) scale3d(0.85, 0.85, 1);
 }
 
 .input__field--nao:focus ~ .graphic--nao,

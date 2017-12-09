@@ -26,11 +26,10 @@ module.exports = function(){
 	function render () {
 		var template =  _.template(document.getElementById('home-template').innerText);
     	el.innerHTML = template({
-    		title: "Add user",
-    		label: "ADD"
+    		title: "Add user"
     	});
     	requestAnimationFrame(function(){
-			[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+			[].slice.call( el.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
 				// in case the input is already filled..
 				if( inputEl.value.trim() !== '' ) {
 					inputEl.parentNode.classList.add('input--filled');

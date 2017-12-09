@@ -18,7 +18,6 @@ module.exports = function(){
 		var template =  _.template(document.getElementById('home-template').innerText);
 		var opts = {
     		title: "edit profile",
-    		label: "SAVE",
     	};
 
 		if(App.currentExtra){
@@ -26,6 +25,7 @@ module.exports = function(){
 			if(settings[App.currentExtra]){
 				opts.username = settings[App.currentExtra].username;
 				opts.email = settings[App.currentExtra].email;
+				opts.label = settings[App.currentExtra].label;
 			}
 		}
     	el.innerHTML = template(opts);

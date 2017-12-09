@@ -39,8 +39,8 @@ module.exports = function(){
 	}
 
 	function fade(type, time, cb){
-		var toAnimate = el.getElementsByClassName('content');
-		toAnimate = toAnimate.length ? toAnimate[0] : el
+		var toAnimate = el;//.getElementsByClassName('content');
+		// toAnimate = toAnimate.length ? toAnimate[0] : el
 
 		var startData = {
 			opacity: toAnimate.style.opacity || parseFloat(window.getComputedStyle(toAnimate, null).opacity)
