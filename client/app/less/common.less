@@ -181,4 +181,21 @@ a{
 			.transform(scaleX(1));
 		}
 	}
+	&.currentUser{
+		padding-left: 25px;
+		opacity: 1;
+		background-color: #ecfdeb;
+		small.select{
+			display: none;
+		}
+		&:after{
+			content: "";
+			position: absolute;
+			width: 7px;
+			top: 0;
+			left: 0px;
+			bottom: 0;
+			background: #50ab50;
+		}
+	}
 }
