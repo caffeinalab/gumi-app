@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>Query Clash Codemotion</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<!-- Place favicon.ico in the root directory -->
+		<!-- <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet"> -->
+		<!--build:css ./css/main.css -->
+		<link rel="stylesheet" href="/css/main.css">
+		<!-- endbuild -->
+		
+	</head>
+	<body>
+		<div id="wrapper" class="-fullSize"></div>
+		<div id="panelTransition" class="-fullSize"></div>
+
+		<!-- PAGES -->
+		<script type="text/template" id="home-template">
+			<## template/home.template></##>
+		</script>
+
+		<script type="text/template" id="list-users-template">
+			<## template/list-users.template></##>
+		</script>
+
+		<script type="text/javascript">
+			var require = require || undefined;
+			if(require){
+				var electron = require('electron');
+				currentWindow = electron.remote.getCurrentWindow();			
+			}else {
+				currentWindow = {};
+				currentWindow.custom = {
+					'currentState': 'list',
+					'getSettings': function(){
+						return {
+							"personal": {
+								"username":"lavolpecheprogramma",
+								"email" : "parziale.alberto@gmail.com"
+							},
+							"caffeina": {
+								"username":"Alberto Parziale",
+								"email" : "alberto.parziale@caffeina.com"
+							}
+						};
+					}
+				};
+			}
+		</script>
+
+		<!--build:js ./js/app.js -->
+		<script src="/js/app.js"></script>
+		<!-- endbuild -->
+	</body>
+</html>

@@ -1,0 +1,71 @@
+// Break points
+@desktop:         ~"screen and (max-width: 1199px)";
+@tablet:          ~"screen and (max-width: 992px)";
+@mobile:          ~"screen and (max-width: 767px)";
+@smallscreen:     ~"screen and (max-width: 480px)";
+
+@frommobile:      ~"screen and (min-width: 768px)";
+@fromtablet:      ~"screen and (min-width: 993px)";
+@fromdesktop:      ~"screen and (min-width: 1200px)";
+@fromlargescreen:      ~"screen and (min-width: 1500px)";
+
+// z-index
+@pages-z-index: 1;
+@panel-z-index: 2;
+
+// colors
+
+@primary-dark: #002551;
+@primary-light: #21BFF0;
+@primary-mid: #0091D0;
+
+@color-title: #d8d8d7;
+
+
+.stagger ( @start, @i) when (@i > 0) {
+	@stag: @start + 300 * (@i); // skip first
+	&:nth-child(@{i}){ 
+		.transition-delay(~"@{stag}ms");
+	}
+	.stagger(@start, @i - 1);
+}
+
+@keyframes loader {
+    from { .transform( translateZ(0) scaleX(0.6)) }
+    to { .transform( translateZ(0) scaleX(1)) }
+}
+
+@keyframes resultAnimation {
+    0 { 
+    	opacity: 0;
+    	.transform(translate(-50%,-50%) translateZ(0) scale(0.4));
+   	}
+   	40% { 
+    	opacity: 1;
+   	}
+    80% { 
+    	opacity: 1;
+   	}
+    100% { 
+    	opacity: 0;
+    	.transform(translate(-50%,-50%) translateZ(0) scale(1.6));
+   	}
+}
+
+@keyframes scoreAnimation {
+    0 { 
+      opacity: 0;
+      .transform(translateX(15px) translateZ(0) scale(0.2));
+    }
+    40% { 
+      opacity: 0.8;
+    }
+    80% { 
+      opacity: 0.8;
+    }
+    100% { 
+      opacity: 0;
+      .transform(translateX(-5px) translateZ(0) scale(1.3));
+    }
+}
+

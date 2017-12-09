@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>Query Clash Codemotion</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<!-- Place favicon.ico in the root directory -->
+		<!-- <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet"> -->
+		<link rel="stylesheet" href="./css/main.css">
+		
+	</head>
+	<body>
+		<div id="wrapper" class="-fullSize"></div>
+		<div id="panelTransition" class="-fullSize"></div>
+
+		<!-- PAGES -->
+		<script type="text/template" id="home-template">
+			<div class="table">
+	<div class="cell">
+		<div class="content">
+			<div class="button _internalLink" data-state="list">
+				<span>MANAGE YOUR PROFILES</span>
+			</div>
+			<h1><%=title%></h1>
+			<span class="input input--nao">
+			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(username)!== 'undefined' ?  username : '' %>">
+			    <label class="input__label input__label--nao" for="input-1">
+			        <span class="input__label-content input__label-content--nao">Username</span>
+			    </label>
+			    <svg class="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+			        <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"></path>
+			    </svg>
+			</span>
+			<span class="input input--nao">
+			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(email)!== 'undefined' ?  email : '' %>">
+			    <label class="input__label input__label--nao" for="input-1">
+			        <span class="input__label-content input__label-content--nao">Email</span>
+			    </label>
+			    <svg class="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+			        <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"></path>
+			    </svg>
+			</span>
+
+			<div class="button">
+				<span><%=label%></span>
+			</div>
+		</div>
+	</div>
+</div>
+		</script>
+
+		<script type="text/template" id="list-users-template">
+			<div class="table">
+	<div class="cell">
+		<div class="content">
+			<h1>MANAGE YOUR PROFILES</h1>
+			<div class="list">
+				<div class="singleUser _internalLink" data-state="edit-profile" data-extra="personal">
+					<span>Personal</span>
+					<small>EDIT</small>
+				</div>
+			</div>
+			<div class="button _internalLink" data-state="new-profile">
+				<span>ADD NEW PROFILE</span>
+			</div>
+		</div>
+	</div>
+</div>
+		</script>
+
+		<script type="text/javascript">
+			var require = require || undefined;
+			if(require){
+				var electron = require('electron');
+				currentWindow = electron.remote.getCurrentWindow();			
+			}else {
+				currentWindow = {};
+				currentWindow.custom = {
+					'currentState': 'list',
+					'getSettings': function(){
+						return {
+							"personal": {
+								"username":"lavolpecheprogramma",
+								"email" : "parziale.alberto@gmail.com"
+							},
+							"caffeina": {
+								"username":"Alberto Parziale",
+								"email" : "alberto.parziale@caffeina.com"
+							}
+						};
+					}
+				};
+			}
+		</script>
+
+		<script src="./js/app.js"></script>
+	</body>
+</html>

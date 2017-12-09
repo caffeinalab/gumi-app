@@ -1,0 +1,41 @@
+{
+  "name": "codemotion-client-2017",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "gulp",
+    "prod": "NODE_ENV=production gulp build"
+  },
+  "author": "Alberto Parziale",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.18.12",
+    "browserify": "^14.4.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-bro": "^1.0.2",
+    "gulp-browserify": "^0.5.1",
+    "gulp-cache-bust": "^1.1.0",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-if": "^2.0.2",
+    "gulp-inject-partials": "^1.0.3",
+    "gulp-less": "^3.3.0",
+    "gulp-notify": "^3.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-useref": "^3.1.2",
+    "gulp-watch": "^4.3.11",
+    "run-sequence": "^1.2.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "@tweenjs/tween.js": "^17.1.1"
+  }
+}
