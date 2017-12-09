@@ -44,8 +44,8 @@ function setGitInfo(newSettings){
 }
 
 var currentSettings;
-function createTray(settings){
-  currentSettings = settings;
+function createTray(currentUserGit){
+  currentSettings = currentUserGit;
   readSettings();
 
   var menuItems = [
@@ -53,11 +53,11 @@ function createTray(settings){
   ];
 
   var count = 0;
-  for (var key in currentSettings){
+  for (var key in settings){
 	if(count == 0){
 	  menuItems.push({type: 'separator'})
 	}
-	var value = currentSettings[key];
+	var value = settings[key];
 	var checked = false;
 	if(value.username == currentSettings.username && value.email == currentSettings.email ){
 	  checked = true;
