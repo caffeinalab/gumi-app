@@ -10,7 +10,7 @@ const DEBUG = false;
 const CWD 			= process.cwd()
 const execOpts = { cwd: CWD, stdio:[0,1,2], sync: true } // stdio is only needed for execSync|spawn
 const settingsPath = path.join(__dirname, 'settings.json')
-const assetsDirectory = __dirname //path.join(__dirname, 'assets')
+const assetsDirectory = path.join(__dirname, 'assets')
 
 var settings = {}
 var currentUser = {}
@@ -139,7 +139,7 @@ const showWindow = () => {
 
 function createTray() {
 
-	tray = new Tray(path.join(assetsDirectory, 'icon.png'))
+	tray = new Tray(path.join(assetsDirectory, 'logoTemplate.png'))
 	tray.on('right-click', toggleWindow)
 	tray.on('double-click', toggleWindow)
 	tray.on('click', toggleWindow)
@@ -201,7 +201,7 @@ function createWindow (state) {
 		frame: false,
 		fullscreenable: false,
 		resizable: false,
-		transparent: true,
+		transparent: false,
 		webPreferences: {
 			backgroundThrottling: false
 		}
