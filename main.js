@@ -87,8 +87,6 @@ function getGitInfo() {
 			}
 
 			currentUser = id
-
-			insertOrUpdateSetting(ob);
 			resolve(ob)
 		 })
 	 })
@@ -176,6 +174,7 @@ function saveSettings() {
 
 function insertOrUpdateSetting(ob) {
 	_(settings).extend(ob)
+	saveSettings()
 }
 
 function removeSetting(key) {
@@ -210,7 +209,7 @@ function createWindow (state) {
 
 	mainWindow.custom = {
 		'currentUser': currentUser,
-		'currentState': state ? state : 'list',
+		'currentState': state ? state : 'profile-list',
 		'getSettings': getAllSettings,
 		'insertOrUpdateSetting': insertOrUpdateSetting,
 		'removeSetting': removeSetting,
@@ -251,7 +250,7 @@ function createWindow (state) {
 		.catch(() => {
 			console.log("First launch probably!")
 			return getGitInfo()
-			.then(saveSettings)
+			.then(insertOrUpdateSetting)
 			.then(createTray)
 			.catch(log)
 		})
