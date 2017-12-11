@@ -20,12 +20,12 @@
 		<div id="panelTransition" class="-fullSize"></div>
 
 		<!-- PAGES -->
-		<script type="text/template" id="home-template">
-			<## template/home.template></##>
+		<script type="text/template" id="profile-list-template">
+			<## template/profile-list.template></##>
 		</script>
 
-		<script type="text/template" id="list-users-template">
-			<## template/list-users.template></##>
+		<script type="text/template" id="profile-form-template">
+			<## template/profile-form.template></##>
 		</script>
 
 		<script type="text/javascript">
@@ -36,19 +36,25 @@
 			}else {
 				currentWindow = {};
 				currentWindow.custom = {
-					'currentState': 'list',
+					'currentUser': '21312',
+					'currentState': 'profile-list',
 					'getSettings': function(){
 						return {
-							"personal": {
+							"21312": {
+								"label": 'personal',
 								"username":"lavolpecheprogramma",
 								"email" : "parziale.alberto@gmail.com"
 							},
-							"caffeina": {
+							"1232142": {
+								"label": 'caffeina',
 								"username":"Alberto Parziale",
 								"email" : "alberto.parziale@caffeina.com"
 							}
 						};
-					}
+					},
+					'insertOrUpdateSetting': function(){console.log('insertOrUpdateSetting called')},
+					'removeSetting': function(){console.log('removeSetting called')},
+					'activateSetting': function(){console.log('activateSetting called')}
 				};
 			}
 		</script>

@@ -1,0 +1,13 @@
+<h1>MANAGE YOUR PROFILES</h1>
+<div class="content">
+	<% _.each(profiles, function(profile, key) { %> 
+		<div class="singleProfile <%= currentProfile == key ? 'current' : ''%>">
+			<span><%=profile.label%></span>
+			<small class="select" data-extra="<%=key%>">SELECT</small>
+			<small class="edit _internalLink" data-state="profile-form" data-extra="<%=key%>">EDIT</small>
+		</div>
+	<% }); %>
+</div>
+<div class="button _bottom _internalLink" data-state="profile-form">
+	<span>ADD NEW PROFILE</span>
+</div>

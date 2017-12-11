@@ -51,7 +51,7 @@ window.App = {
 
 window.App.init();
 
-},{"./components/raf":2,"./router.js":3,"./utils.js":4,"./views":6,"@tweenjs/tween.js":12,"underscore":14}],2:[function(require,module,exports){
+},{"./components/raf":2,"./router.js":3,"./utils.js":4,"./views":6,"@tweenjs/tween.js":11,"underscore":13}],2:[function(require,module,exports){
 'use strict';
 
 require('../vendor/raf-polyfill');
@@ -113,18 +113,13 @@ function init() {
 	navigate(currentWindow.custom.currentState);
 };
 
-function goToHome() {
-	var view = new App.Views.Home();
+function goToProfileList() {
+	var view = new App.Views.ProfileList();
 	App.instance.goto(view);
 };
 
-function goToNewUser() {
-	var view = new App.Views.AddUser();
-	App.instance.goto(view);
-};
-
-function goToModifyUser() {
-	var view = new App.Views.ModifyUser();
+function goToProfileForm() {
+	var view = new App.Views.ProfileForm();
 	App.instance.goto(view);
 };
 
@@ -135,14 +130,11 @@ function navigate(state) {
 	currentState = state;
 
 	switch (currentState) {
-		case 'list':
-			goToHome();
+		case 'profile-list':
+			goToProfileList();
 			break;
-		case 'new-profile':
-			goToNewUser();
-			break;
-		case 'edit-profile':
-			goToModifyUser();
+		case 'profile-form':
+			goToProfileForm();
 			break;
 		default:
 	}
@@ -335,139 +327,23 @@ var _wrapper = require('./wrapper.js');
 
 var _wrapper2 = _interopRequireDefault(_wrapper);
 
-var _listUsers = require('./pages/list-users.js');
+var _profileList = require('./pages/profile-list.js');
 
-var _listUsers2 = _interopRequireDefault(_listUsers);
+var _profileList2 = _interopRequireDefault(_profileList);
 
-var _addUser = require('./pages/add-user.js');
+var _profileForm = require('./pages/profile-form.js');
 
-var _addUser2 = _interopRequireDefault(_addUser);
-
-var _modifyUser = require('./pages/modify-user.js');
-
-var _modifyUser2 = _interopRequireDefault(_modifyUser);
+var _profileForm2 = _interopRequireDefault(_profileForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
 	Wrapper: _wrapper2.default,
-	Home: _listUsers2.default,
-	AddUser: _addUser2.default,
-	ModifyUser: _modifyUser2.default
+	ProfileList: _profileList2.default,
+	ProfileForm: _profileForm2.default
 };
 
-},{"./pages/add-user.js":7,"./pages/list-users.js":8,"./pages/modify-user.js":9,"./wrapper.js":11}],7:[function(require,module,exports){
-'use strict';
-
-var _template = require('../template');
-
-var _template2 = _interopRequireDefault(_template);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-if (!String.prototype.trim) {
-	(function () {
-		// Make sure we trim BOM and NBSP
-		var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-		String.prototype.trim = function () {
-			return this.replace(rtrim, '');
-		};
-	})();
-}
-
-function onInputFocus(ev) {
-	ev.target.parentNode.classList.add('input--filled');
-}
-function onInputBlur(ev) {
-	if (ev.target.value.trim() === '') {
-		ev.target.parentNode.classList.remove('input--filled');
-	}
-}
-
-module.exports = function () {
-	var Tmp = new _template2.default();
-	var el = Tmp.createEl('page user -fullSize');
-
-	function render() {
-		var template = _.template(document.getElementById('home-template').innerText);
-		el.innerHTML = template({
-			title: "Add user"
-		});
-		requestAnimationFrame(function () {
-			[].slice.call(el.querySelectorAll('input.input__field')).forEach(function (inputEl) {
-				// in case the input is already filled..
-				if (inputEl.value.trim() !== '') {
-					inputEl.parentNode.classList.add('input--filled');
-				}
-				// events:
-				inputEl.addEventListener('focus', onInputFocus);
-				inputEl.addEventListener('blur', onInputBlur);
-			});
-		});
-	}
-
-	function remove() {
-		if (Tmp) {
-			Tmp.stopTween();
-			Tmp = null;
-		}
-		if (el) {
-			el.remove();
-			el = null;
-		}
-	}
-
-	return {
-		el: el,
-		render: render,
-		transitionIn: Tmp.transitionIn,
-		transitionOut: Tmp.transitionOut,
-		remove: remove
-	};
-};
-
-},{"../template":10}],8:[function(require,module,exports){
-'use strict';
-
-var _template = require('../template');
-
-var _template2 = _interopRequireDefault(_template);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-module.exports = function () {
-	var Tmp = new _template2.default();
-	var el = Tmp.createEl('page user -fullSize');
-
-	function render() {
-		var template = _.template(document.getElementById('list-users-template').innerText);
-		el.innerHTML = template({
-			title: "Your profiles"
-		});
-	}
-
-	function remove() {
-		if (Tmp) {
-			Tmp.stopTween();
-			Tmp = null;
-		}
-		if (el) {
-			el.remove();
-			el = null;
-		}
-	}
-
-	return {
-		el: el,
-		render: render,
-		transitionIn: Tmp.transitionIn,
-		transitionOut: Tmp.transitionOut,
-		remove: remove
-	};
-};
-
-},{"../template":10}],9:[function(require,module,exports){
+},{"./pages/profile-form.js":7,"./pages/profile-list.js":8,"./wrapper.js":10}],7:[function(require,module,exports){
 'use strict';
 
 var _template = require('../template');
@@ -478,41 +354,156 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function onInputFocus(ev) {
 	ev.target.parentNode.classList.add('input--filled');
+	ev.target.parentNode.classList.remove('error');
 }
+
 function onInputBlur(ev) {
 	if (ev.target.value.trim() === '') {
 		ev.target.parentNode.classList.remove('input--filled');
 	}
 }
 
+function onSave() {
+	var label = document.getElementById('label');
+	var username = document.getElementById('username');
+	var email = document.getElementById('email');
+	var error = false;
+
+	label.parentNode.classList.remove('error');
+	username.parentNode.classList.remove('error');
+	email.parentNode.classList.remove('error');
+
+	if (label.value == '') {
+		label.parentNode.classList.add('error');
+		error = true;
+	}
+
+	if (username.value == '') {
+		username.parentNode.classList.add('error');
+		error = true;
+	}
+
+	if (email.value == '') {
+		email.parentNode.classList.add('error');
+		error = true;
+	}
+
+	if (error) {
+		return false;
+	}
+	var id = Date.now();
+	var ob = {};
+	ob[id] = {
+		label: label.value,
+		username: username.value,
+		email: email.value
+	};
+	currentWindow.custom.insertOrUpdateSetting(ob);
+
+	App.Router.navigate('profile-list');
+}
+
+function addFormListeners(el) {
+
+	el.querySelector('#saveButton').addEventListener('click', onSave);
+
+	[].slice.call(el.querySelectorAll('input.input__field')).forEach(function (inputEl) {
+		// in case the input is already filled..
+		if (inputEl.value.trim() !== '') {
+			inputEl.parentNode.classList.add('input--filled');
+		}
+		// events:
+		inputEl.addEventListener('focus', onInputFocus);
+		inputEl.addEventListener('blur', onInputBlur);
+	});
+}
+
 module.exports = function () {
 	var Tmp = new _template2.default();
 	var el = Tmp.createEl('page user -fullSize');
-
+	var currentIDProfile = '';
 	function render() {
-		var template = _.template(document.getElementById('home-template').innerText);
+		var template = _.template(document.getElementById('profile-form-template').innerText);
 		var opts = {
-			title: "edit profile"
+			title: "add profile"
 		};
 
 		if (App.currentExtra) {
 			var settings = currentWindow.custom.getSettings();
 			if (settings[App.currentExtra]) {
+				currentIDProfile = App.currentExtra;
+				opts.title = "edit profile";
+				opts.label = settings[App.currentExtra].label;
 				opts.username = settings[App.currentExtra].username;
 				opts.email = settings[App.currentExtra].email;
-				opts.label = settings[App.currentExtra].label;
 			}
+			App.currentExtra = undefined;
 		}
+
 		el.innerHTML = template(opts);
 		requestAnimationFrame(function () {
-			[].slice.call(el.querySelectorAll('input.input__field')).forEach(function (inputEl) {
-				// in case the input is already filled..
-				if (inputEl.value.trim() !== '') {
-					inputEl.parentNode.classList.add('input--filled');
+			addFormListeners(el);
+		});
+	}
+
+	function remove() {
+		if (Tmp) {
+			Tmp.stopTween();
+			Tmp = null;
+		}
+		if (el) {
+			el.remove();
+			el = null;
+		}
+	}
+
+	return {
+		el: el,
+		render: render,
+		transitionIn: Tmp.transitionIn,
+		transitionOut: Tmp.transitionOut,
+		remove: remove
+	};
+};
+
+},{"../template":9}],8:[function(require,module,exports){
+'use strict';
+
+var _template = require('../template');
+
+var _template2 = _interopRequireDefault(_template);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = function () {
+	var Tmp = new _template2.default();
+	var el = Tmp.createEl('page user -fullSize');
+
+	function render() {
+		var template = _.template(document.getElementById('profile-list-template').innerText);
+		el.innerHTML = template({
+			title: "Your profiles",
+			currentProfile: currentWindow.custom.currentUser,
+			profiles: currentWindow.custom.getSettings()
+		});
+
+		requestAnimationFrame(function () {
+			addListeners(el);
+		});
+	}
+	function addListeners(el) {
+		[].slice.call(el.querySelectorAll('.singleProfile .select')).forEach(function (selectButton) {
+			// events:
+			selectButton.addEventListener('click', function (e) {
+				if (!e.target.dataset.extra) {
+					return;
 				}
-				// events:
-				inputEl.addEventListener('focus', onInputFocus);
-				inputEl.addEventListener('blur', onInputBlur);
+
+				var current = el.querySelector('.singleProfile.current');
+				if (current) current.classList.remove('current');
+
+				currentWindow.custom.activateSetting(e.target.dataset.extra);
+				e.target.parentNode.classList.add('current');
 			});
 		});
 	}
@@ -537,7 +528,7 @@ module.exports = function () {
 	};
 };
 
-},{"../template":10}],10:[function(require,module,exports){
+},{"../template":9}],9:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -607,7 +598,7 @@ module.exports = function () {
 	};
 };
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var _template = require('./template');
@@ -716,7 +707,7 @@ module.exports = {
 	goto: goto
 };
 
-},{"./template":10}],12:[function(require,module,exports){
+},{"./template":9}],11:[function(require,module,exports){
 (function (process){
 /**
  * Tween.js - Licensed under the MIT license
@@ -1632,7 +1623,7 @@ TWEEN.Interpolation = {
 })(this);
 
 }).call(this,require('_process'))
-},{"_process":13}],13:[function(require,module,exports){
+},{"_process":12}],12:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1818,7 +1809,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

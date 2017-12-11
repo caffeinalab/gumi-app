@@ -4,18 +4,13 @@ function init(){
 	navigate(currentWindow.custom.currentState);
 };
 
-function goToHome(){
-	var view = new App.Views.Home();
+function goToProfileList(){
+	var view = new App.Views.ProfileList();
 	App.instance.goto(view);
 };
 
-function goToNewUser(){
-	var view = new App.Views.AddUser();
-	App.instance.goto(view);
-};
-
-function goToModifyUser(){
-	var view = new App.Views.ModifyUser();
+function goToProfileForm(){
+	var view = new App.Views.ProfileForm();
 	App.instance.goto(view);
 };
 
@@ -26,14 +21,11 @@ function navigate(state){
 	currentState = state;
 
 	switch(currentState){
-		case 'list':
-			goToHome();
+		case 'profile-list':
+			goToProfileList();
 			break;
-		case 'new-profile':
-			goToNewUser();
-			break;
-		case 'edit-profile':
-			goToModifyUser();
+		case 'profile-form':
+			goToProfileForm();
 			break;
 		default:
 	}

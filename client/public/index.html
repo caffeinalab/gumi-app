@@ -18,13 +18,30 @@
 		<div id="panelTransition" class="-fullSize"></div>
 
 		<!-- PAGES -->
-		<script type="text/template" id="home-template">
+		<script type="text/template" id="profile-list-template">
+			<h1>MANAGE YOUR PROFILES</h1>
+<div class="content">
+	<% _.each(profiles, function(profile, key) { %> 
+		<div class="singleProfile <%= currentProfile == key ? 'current' : ''%>">
+			<span><%=profile.label%></span>
+			<small class="select" data-extra="<%=key%>">SELECT</small>
+			<small class="edit _internalLink" data-state="profile-form" data-extra="<%=key%>">EDIT</small>
+		</div>
+	<% }); %>
+</div>
+<div class="button _bottom _internalLink" data-state="profile-form">
+	<span>ADD NEW PROFILE</span>
+</div>
+
+		</script>
+
+		<script type="text/template" id="profile-form-template">
 			<h1><%=title%></h1>
 <div class="content">
 	<div class="table">
 		<div class="cell">
 			<span class="input input--nao">
-			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(label)!== 'undefined' ?  label : '' %>">
+			    <input class="input__field input__field--nao" type="text" id="label" value="<%= typeof(label)!== 'undefined' ?  label : '' %>">
 			    <label class="input__label input__label--nao" for="input-1">
 			        <span class="input__label-content input__label-content--nao">Profile Label</span>
 			    </label>
@@ -33,7 +50,7 @@
 			    </svg>
 			</span>
 			<span class="input input--nao">
-			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(username)!== 'undefined' ?  username : '' %>">
+			    <input class="input__field input__field--nao" type="text" id="username" value="<%= typeof(username)!== 'undefined' ?  username : '' %>">
 			    <label class="input__label input__label--nao" for="input-1">
 			        <span class="input__label-content input__label-content--nao">Username</span>
 			    </label>
@@ -42,7 +59,7 @@
 			    </svg>
 			</span>
 			<span class="input input--nao">
-			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(email)!== 'undefined' ?  email : '' %>">
+			    <input class="input__field input__field--nao" type="text" id="email" value="<%= typeof(email)!== 'undefined' ?  email : '' %>">
 			    <label class="input__label input__label--nao" for="input-1">
 			        <span class="input__label-content input__label-content--nao">Email</span>
 			    </label>
@@ -55,183 +72,13 @@
 </div>
 
 <div class="_bottom">
-	<div class="button _half _internalLink" data-state="list">
+	<div class="button _half _internalLink" data-state="profile-list">
 		<span>BACK</span>
 	</div>
-	<div class="button _half">
+	<div id="saveButton" class="button _half">
 		<span>SAVE</span>
 	</div>
 </div>
-		</script>
-
-		<script type="text/template" id="list-users-template">
-			<h1>MANAGE YOUR PROFILES</h1>
-<div class="content">
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-	<div class="singleUser">
-		<span>Personal</span>
-		<small class="select">SELECT</small>
-		<small class="edit _internalLink" data-state="edit-profile" data-extra="personal">EDIT</small>
-	</div>
-</div>
-<div class="button _bottom _internalLink" data-state="new-profile">
-	<span>ADD NEW PROFILE</span>
-</div>
-
 		</script>
 
 		<script type="text/javascript">
@@ -242,19 +89,25 @@
 			}else {
 				currentWindow = {};
 				currentWindow.custom = {
-					'currentState': 'list',
+					'currentUser': '21312',
+					'currentState': 'profile-list',
 					'getSettings': function(){
 						return {
-							"personal": {
+							"21312": {
+								"label": 'personal',
 								"username":"lavolpecheprogramma",
 								"email" : "parziale.alberto@gmail.com"
 							},
-							"caffeina": {
+							"1232142": {
+								"label": 'caffeina',
 								"username":"Alberto Parziale",
 								"email" : "alberto.parziale@caffeina.com"
 							}
 						};
-					}
+					},
+					'insertOrUpdateSetting': function(){console.log('insertOrUpdateSetting called')},
+					'removeSetting': function(){console.log('removeSetting called')},
+					'activateSetting': function(){console.log('activateSetting called')}
 				};
 			}
 		</script>

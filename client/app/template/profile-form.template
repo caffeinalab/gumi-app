@@ -3,7 +3,7 @@
 	<div class="table">
 		<div class="cell">
 			<span class="input input--nao">
-			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(label)!== 'undefined' ?  label : '' %>">
+			    <input class="input__field input__field--nao" type="text" id="label" value="<%= typeof(label)!== 'undefined' ?  label : '' %>">
 			    <label class="input__label input__label--nao" for="input-1">
 			        <span class="input__label-content input__label-content--nao">Profile Label</span>
 			    </label>
@@ -12,7 +12,7 @@
 			    </svg>
 			</span>
 			<span class="input input--nao">
-			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(username)!== 'undefined' ?  username : '' %>">
+			    <input class="input__field input__field--nao" type="text" id="username" value="<%= typeof(username)!== 'undefined' ?  username : '' %>">
 			    <label class="input__label input__label--nao" for="input-1">
 			        <span class="input__label-content input__label-content--nao">Username</span>
 			    </label>
@@ -21,7 +21,7 @@
 			    </svg>
 			</span>
 			<span class="input input--nao">
-			    <input class="input__field input__field--nao" type="text" id="input-1" value="<%= typeof(email)!== 'undefined' ?  email : '' %>">
+			    <input class="input__field input__field--nao" type="text" id="email" value="<%= typeof(email)!== 'undefined' ?  email : '' %>">
 			    <label class="input__label input__label--nao" for="input-1">
 			        <span class="input__label-content input__label-content--nao">Email</span>
 			    </label>
@@ -34,10 +34,10 @@
 </div>
 
 <div class="_bottom">
-	<div class="button _half _internalLink" data-state="list">
+	<div class="button _half _internalLink" data-state="profile-list">
 		<span>BACK</span>
 	</div>
-	<div class="button _half">
+	<div id="saveButton" class="button _half">
 		<span>SAVE</span>
 	</div>
 </div>

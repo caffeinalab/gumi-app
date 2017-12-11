@@ -1,12 +1,10 @@
 import Wrapper from './wrapper.js'
 
-import Home from './pages/list-users.js'
-import AddUser from './pages/add-user.js'
-import ModifyUser from './pages/modify-user.js'
+import ProfileList from './pages/profile-list.js'
+import ProfileForm from './pages/profile-form.js'
 
 module.exports = {
 	Wrapper: Wrapper,
-	Home: Home,
-	AddUser: AddUser,
-	ModifyUser: ModifyUser
+	ProfileList: ProfileList,
+	ProfileForm: ProfileForm,
 };
