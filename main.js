@@ -1,163 +1,279 @@
 const {app, Menu, Tray, BrowserWindow, nativeImage} = require('electron')
 
-
 const path = require('path')
-const fs = require('fs');
+const fs = require('fs')
 const url = require('url')
+const child_process	= require('child_process')
+const _ = require('underscore')
 
-let settings = {};
-const settingsPath = path.join(__dirname, 'settings.json');
+const DEBUG = false;
+const CWD 			= process.cwd()
+const execOpts = { cwd: CWD, stdio:[0,1,2], sync: true } // stdio is only needed for execSync|spawn
+const settingsPath = path.join(__dirname, 'settings.json')
+const assetsDirectory = __dirname //path.join(__dirname, 'assets')
+
+var settings = {}
+var currentUser = {}
 
 app.dock.hide()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let tray
 
-let tray = null
 
-var exec = require('child_process').exec;
+/////////////
+// Helpers //
+/////////////
 
-function execute(command, callback){
-	exec(command, function(error, stdout, stderr){ callback(stdout); });
-};
+const log = (err, stdout, stderr) => {
+	if (err) process.stdout.write(`${err}\n`)
 
-function getGitInfo(){
-  return new Promise(function(resolve,reject){
-	execute("git config --global user.name", function(name){
-		 execute("git config --global user.email", function(email){
-		   console.log({ username: name.replace("\n", ""), email: email.replace("\n", "") });
-			 resolve({ username: name.replace("\n", ""), email: email.replace("\n", "") });
-		 });
-	 });
-  });
+	if (stderr != null && stderr != "") process.stdout.write(`${stderr}\n`)
+	if (stdout != null && stdout != "") process.stdout.write(`${stdout}\n`)
 }
 
-function setGitInfo(newSettings){
-  return new Promise(function(resolve,reject){
-	execute(`git config --global user.name \"${newSettings.username}\"`, function(name){
-		 execute(`git config --global user.email \"${newSettings.email}\"`, function(email){
-		  getGitInfo();
-		 });
-	 });
-  });
-}
+const execute = (cmd, opts, callback) => {
 
-var currentSettings;
-function createTray(currentUserGit){
-  currentSettings = currentUserGit;
-  readSettings();
-
-  var menuItems = [
-	{label: 'Add an user..', type: 'normal', click: function(){createWindow('new-profile')}}
-  ];
-
-  var count = 0;
-  for (var key in settings){
-	if(count == 0){
-	  menuItems.push({type: 'separator'})
+	if (_(opts).isFunction()) {
+		callback = opts
+		opts = {}
 	}
-	var value = settings[key];
-	var checked = false;
-	if(value.username == currentSettings.username && value.email == currentSettings.email ){
-	  checked = true;
+	opts = _(execOpts).extend(opts)
+
+	if (opts.sync || !_.isArray(cmd)) {
+		if (DEBUG) console.log("--", "Sync command: ", JSON.stringify(cmd), JSON.stringify(opts), callback)
+
+		if (_.isArray(cmd)) cmd = cmd.join(" ") //escape(cmd)
+		child_process.exec(cmd, opts, callback)
+	} else {
+		return new Promise((resolve, reject) => {
+			if (DEBUG) console.log("--", "Spawn command", JSON.stringify(cmd), cmd.join(" "), JSON.stringify(opts))
+
+			let spawned = child_process.spawn(cmd.shift(), cmd, opts)
+			spawned.on("close", (err) => {
+				if (err != 0) log(`Process exited with code ${err}`, false, false)
+
+				if (err != 0) reject(err, false, false)
+				//else reject(err)
+			})
+
+			spawned.stdout.on('data', (data) => {
+				if (callback) callback(false, data, false)
+				else resolve(data)
+			})
+		})
 	}
-	menuItems.push({ 
-	  label: key,
-	  type: 'radio',
-	  checked: checked,
-	  click: function(menuItem){
-		setGitInfo(currentSettings[menuItem.label])
-		console.log(menuItem.label)}}
-
-	  )
-	count++;
-  }
-
-  var image = nativeImage.createFromPath(path.join(__dirname, 'icon.png'));  
-  image.setTemplateImage(true); 
-
-  tray = new Tray(image)
-  const contextMenu = Menu.buildFromTemplate(menuItems);
-  tray.setToolTip('This is my application.')
-  tray.setContextMenu(contextMenu)
-}
-
-function readSettings(){
-  try {
-	settings = fs.readFileSync(settingsPath, 'utf-8');
-	settings = JSON.parse(settings);
-	console.log('Loaded file:' + settingsPath, settings)
-  } catch (err) {
-	console.log('Error reading the file: ' + JSON.stringify(err));
-  }
-}
-
-function saveSettings(content){
-  try { 
-	fs.writeFileSync(settingsPath, content, 'utf-8'); 
-  }
-  catch(e) { alert('Failed to save the file !'); }
 }
 
 
-function createWindow (state) {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+function getGitInfo() {
+  return new Promise((resolve,reject) => {
+	execute("git config --global user.name", (err, name) => {
+		 execute("git config --global user.email", (err, email) => {
+		 	if (!_(name).isString() || !_(email).isString()) {
+		 		resolve({})
+		 		return false
+		 	}
 
-  mainWindow.custom = {
-	   'currentState': state ? state : 'list',
-	   'getSettings': function(){
-		  return settings;
-	   }
-   };
+		 	let ob = {}
+		 	let id = Date.now()
+		 	
+		 	ob[id] = {
+				label: name.replace("\n", ""),
+				username: name.replace("\n", ""), 
+				email: email.replace("\n", "") 
+			}
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-	pathname: path.join(__dirname, '/client/public/index.html'),
-	protocol: 'file:',
-	slashes: true
-  }))
+			currentUser = id
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-	// Dereference the window object, usually you would store windows
-	// in an array if your app supports multi windows, this is the time
-	// when you should delete the corresponding element.
-	mainWindow = null
+			insertOrUpdateSetting(ob);
+			resolve(ob)
+		 })
+	 })
   })
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', function(){
-  // createWindow()
-  getGitInfo().then(createTray);
-})
+function setGitInfo(key) {
+	return new Promise((resolve,reject) => {
+		if (!settings[key]) return reject()
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-	app.quit()
-  }
-})
+		execute(`git config --global user.name \"${settings[key].username}\"`, (name) => {
+			execute(`git config --global user.email \"${settings[key].email}\"`, (email) => {
+				currentUser = key
 
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
+				getGitInfo()
+				.then(resolve)
+				.catch(reject)
+			})
+		})
+	})
+}
 
-	console.log('in active');
+const getWindowPosition = () => {
+	const windowBounds = mainWindow.getBounds()
+	const trayBounds = tray.getBounds()
+
+	// Center window horizontally below the tray icon
+	const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2))
+
+	// Position window 4 pixels vertically below the tray icon
+	const y = Math.round(trayBounds.y + trayBounds.height + 4)
+
+	return {x: x, y: y}
+}
+
+const toggleWindow = () => {
+	if (mainWindow.isVisible()) {
+		mainWindow.hide()
+	} else {
+		showWindow()
+	}
+}
+
+const showWindow = () => {
+	const position = getWindowPosition()
+	mainWindow.setPosition(position.x, position.y, false)
+	mainWindow.show()
+	mainWindow.focus()
+}
+
+function createTray() {
+
+	tray = new Tray(path.join(assetsDirectory, 'icon.png'))
+	tray.on('right-click', toggleWindow)
+	tray.on('double-click', toggleWindow)
+	tray.on('click', toggleWindow)
+
 	createWindow()
-	createTray()
+
+	return true
+}
+
+function readSettings() {
+	return new Promise((resolve, reject) => {
+		try {
+			settings = fs.readFileSync(settingsPath, 'utf-8')
+			settings = JSON.parse(settings)
+			console.log('Loaded file:' + settingsPath, settings)
+			resolve(settings)
+		} catch (err) {
+			console.log('Error reading the file: ' + JSON.stringify(err))
+			reject(null)
+		}
+	})
+}
+
+function saveSettings() {
+  try { 
+	fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 4), 'utf-8') 
   }
-})
+  catch(e) { 
+  	alert('Failed to save the file !') 
+  }
+}
+
+function insertOrUpdateSetting(ob) {
+	_(settings).extend(ob)
+}
+
+function removeSetting(key) {
+	if(setting[key] != null) delete setting[key]
+}
+
+function getAllSettings() {
+	return settings
+	// _(settings).each((s, i) => {
+	// 	if (i === currentUser) _(s).extend({ checked: true })
+	// })
+}
+
+function activateSetting(key) {
+	if (settings[key]) setGitInfo(key)
+}
+
+function createWindow (state) {
+  // Create the browser window.
+	mainWindow = new BrowserWindow({
+		width: 300, 
+		height: 450,
+		show: false,
+		frame: false,
+		fullscreenable: false,
+		resizable: false,
+		transparent: true,
+		webPreferences: {
+			backgroundThrottling: false
+		}
+	})
+
+	mainWindow.custom = {
+		'currentUser': currentUser,
+		'currentState': state ? state : 'list',
+		'getSettings': getAllSettings,
+		'insertOrUpdateSetting': insertOrUpdateSetting,
+		'removeSetting': removeSetting,
+		'activateSetting': activateSetting
+	}
+
+  // and load the index.html of the app.
+	mainWindow.loadURL(url.format({
+		pathname: path.join(__dirname, '/client/public/index.html'),
+		protocol: 'file:',
+		slashes: true
+	}))
+
+	// Hide the window when it loses focus
+	mainWindow.on('blur', () => {
+		if (!mainWindow.webContents.isDevToolsOpened()) {
+		  mainWindow.hide()
+		}
+	})
+}
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+
+(function() {
+	// This method will be called when Electron has finished
+	// initialization and is ready to create browser windows.
+	// Some APIs can only be used after this event occurs.
+	app.on('ready', function() {
+		// createWindow()
+
+		getGitInfo()
+		.then(readSettings)
+		.then(createTray)
+		.catch(() => {
+			console.log("First launch probably!")
+			return getGitInfo()
+			.then(saveSettings)
+			.then(createTray)
+			.catch(log)
+		})
+	})
+
+	// Quit when all windows are closed.
+	app.on('window-all-closed', function () {
+		// On OS X it is common for applications and their menu bar
+		// to stay active until the user quits explicitly with Cmd + Q
+		if (process.platform !== 'darwin') {
+			app.quit()
+		}
+	})
+
+	app.on('activate', function () {
+		// On OS X it's common to re-create a window in the app when the
+		// dock icon is clicked and there are no other windows open.
+		if (mainWindow === null) {
+
+			console.log('in active')
+			createWindow()
+			createTray()
+		}
+	})
+})()
