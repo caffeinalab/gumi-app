@@ -391,21 +391,30 @@ function onSave() {
 	if (error) {
 		return false;
 	}
-	var id = Date.now();
+
+	var id = App.currentExtra ? App.currentExtra : Date.now();
 	var ob = {};
+
 	ob[id] = {
 		label: label.value,
 		username: username.value,
 		email: email.value
 	};
+
 	currentWindow.custom.insertOrUpdateSetting(ob);
 
+	App.Router.navigate('profile-list');
+}
+
+function onDelete() {
+	currentWindow.custom.removeSetting(App.currentExtra);
 	App.Router.navigate('profile-list');
 }
 
 function addFormListeners(el) {
 
 	el.querySelector('#saveButton').addEventListener('click', onSave);
+	el.querySelector('#deleteButton').addEventListener('click', onDelete);
 
 	[].slice.call(el.querySelectorAll('input.input__field')).forEach(function (inputEl) {
 		// in case the input is already filled..
@@ -421,23 +430,22 @@ function addFormListeners(el) {
 module.exports = function () {
 	var Tmp = new _template2.default();
 	var el = Tmp.createEl('page user -fullSize');
-	var currentIDProfile = '';
 	function render() {
 		var template = _.template(document.getElementById('profile-form-template').innerText);
 		var opts = {
-			title: "add profile"
+			title: "add profile",
+			isNew: true
 		};
 
 		if (App.currentExtra) {
 			var settings = currentWindow.custom.getSettings();
 			if (settings[App.currentExtra]) {
-				currentIDProfile = App.currentExtra;
 				opts.title = "edit profile";
 				opts.label = settings[App.currentExtra].label;
 				opts.username = settings[App.currentExtra].username;
 				opts.email = settings[App.currentExtra].email;
+				opts.isNew = false;
 			}
-			App.currentExtra = undefined;
 		}
 
 		el.innerHTML = template(opts);
@@ -447,6 +455,7 @@ module.exports = function () {
 	}
 
 	function remove() {
+		App.currentExtra = undefined;
 		if (Tmp) {
 			Tmp.stopTween();
 			Tmp = null;
@@ -686,7 +695,6 @@ function translate(type, time, cb) {
 	};
 
 	tweenFade = new TWEEN.Tween(startData).to(endData, time).onUpdate(function () {
-		console.log(startData.translate);
 		panelTransition.dataset.translate = startData.translate;
 		window.Utils.setTransformStyle(panelTransition, 'translateX(' + startData.translate + '%)');
 	}).onComplete(function () {

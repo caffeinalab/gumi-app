@@ -80,7 +80,6 @@ function translate(type, time, cb){
 
 	tweenFade = new TWEEN.Tween(startData).to(endData, time)
 	.onUpdate(function(){
-		console.log(startData.translate);
 		panelTransition.dataset.translate = startData.translate;
 		window.Utils.setTransformStyle(panelTransition, 'translateX('+ startData.translate +'%)')
 	})
