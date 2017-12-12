@@ -401,20 +401,22 @@ function onSave() {
 		email: email.value
 	};
 
-	currentWindow.custom.insertOrUpdateSetting(ob);
+	ipcRenderer.sendSync('callSyncMethod', 'insertOrUpdateSetting', ob);
 
 	App.Router.navigate('profile-list');
 }
 
 function onDelete() {
-	currentWindow.custom.removeSetting(App.currentExtra);
+	ipcRenderer.sendSync('callSyncMethod', 'removeSetting', App.currentExtra);
 	App.Router.navigate('profile-list');
 }
 
 function addFormListeners(el) {
 
 	el.querySelector('#saveButton').addEventListener('click', onSave);
-	el.querySelector('#deleteButton').addEventListener('click', onDelete);
+	if (el.querySelector('#deleteButton')) {
+		el.querySelector('#deleteButton').addEventListener('click', onDelete);
+	}
 
 	[].slice.call(el.querySelectorAll('input.input__field')).forEach(function (inputEl) {
 		// in case the input is already filled..
@@ -438,7 +440,7 @@ module.exports = function () {
 		};
 
 		if (App.currentExtra) {
-			var settings = currentWindow.custom.getSettings();
+			var settings = ipcRenderer.sendSync('callSyncMethod', 'getSettings');
 			if (settings[App.currentExtra]) {
 				opts.title = "edit profile";
 				opts.label = settings[App.currentExtra].label;
@@ -492,8 +494,8 @@ module.exports = function () {
 		var template = _.template(document.getElementById('profile-list-template').innerText);
 		el.innerHTML = template({
 			title: "Your profiles",
-			currentProfile: currentWindow.custom.currentUser,
-			profiles: currentWindow.custom.getSettings()
+			currentProfile: ipcRenderer.sendSync('callSyncMethod', 'getCurrentUser'),
+			profiles: ipcRenderer.sendSync('callSyncMethod', 'getSettings')
 		});
 
 		requestAnimationFrame(function () {
@@ -511,7 +513,7 @@ module.exports = function () {
 				var current = el.querySelector('.singleProfile.current');
 				if (current) current.classList.remove('current');
 
-				currentWindow.custom.activateSetting(e.target.dataset.extra);
+				ipcRenderer.sendSync('callSyncMethod', 'activateSetting', e.target.dataset.extra);
 				e.target.parentNode.classList.add('current');
 			});
 		});

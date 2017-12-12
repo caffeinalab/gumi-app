@@ -68,7 +68,7 @@
 			    </svg>
 			</span>
 			<% if(!isNew){  %>
-				<small id="deleteButton">DELETE IT</small>
+				<small id="deleteButton">DELETE</small>
 			<% } %>
 		</div>
 	</div>
@@ -89,6 +89,7 @@
 			if(require){
 				var electron = require('electron');
 				currentWindow = electron.remote.getCurrentWindow();			
+				ipcRenderer = electron.ipcRenderer;
 			}else {
 				currentWindow = {};
 				currentWindow.custom = {

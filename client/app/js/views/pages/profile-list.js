@@ -8,8 +8,8 @@ module.exports = function(){
 		var template =  _.template(document.getElementById('profile-list-template').innerText);
     	el.innerHTML = template({
     		title: "Your profiles",
-    		currentProfile: currentWindow.custom.currentUser,
-    		profiles: currentWindow.custom.getSettings()
+    		currentProfile: ipcRenderer.sendSync('callSyncMethod', 'getCurrentUser'),
+    		profiles: ipcRenderer.sendSync('callSyncMethod', 'getSettings')
     	});
 
     	requestAnimationFrame(function(){
@@ -25,7 +25,7 @@ module.exports = function(){
 				var current = el.querySelector('.singleProfile.current');
 				if(current) current.classList.remove('current');
 
-				currentWindow.custom.activateSetting(e.target.dataset.extra);
+				ipcRenderer.sendSync('callSyncMethod', 'activateSetting', e.target.dataset.extra);
 				e.target.parentNode.classList.add('current');
 			});
 		} );

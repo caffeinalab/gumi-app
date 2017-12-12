@@ -4,6 +4,9 @@ html, body{
 	overflow: hidden;
     font-size: 17px;
 	color: #333;
+	-webkit-font-smoothing: antialiased;
+	webkit-touch-callout: none;
+	user-select: none;
 }
 
 *{
@@ -24,16 +27,19 @@ a{
 
 ._bottom{
 	position: absolute;
-	bottom: 10px;
-	right: 10px;
-	left: 10px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
 	z-index: 3;
 	background-color: #ffffff;
+	font-size: 0;
+	> * {
+		font-size: 17px;
+	}
 }
 ._half{
 	display: inline-block;
-	width: 48%;
-	margin: 0 1%;
+	width: 50%;
 }
 #wrapper{
 	z-index: @pages-z-index;
@@ -105,12 +111,11 @@ a{
 		margin: 40px auto 0 0;
 		font-weight: bold;
 		padding: 5px 10px;
-		border: 1px solid;
-		opacity: 0.3;
+		color: #ffffff;
+		background: @primary-color;
 		cursor: pointer;
-		.transition(opacity 0.2s);
-		&:hover{
-			opacity: 1;
+		&._bottom{
+			border:0;
 		}
 	}
 	#deleteButton{
@@ -118,8 +123,11 @@ a{
 		width: 150px;
 		text-align: center;
 		margin: 20px auto;
-		color: red;
+		color: @error-color;
 		cursor: pointer;
+	}
+	#saveButton{
+		border-left: 1px solid;
 	}
 }
 
@@ -144,24 +152,32 @@ a{
 	}
 	span{
 		display: block;
-		width: ~"calc(100% - 90px)";
+		width: ~"calc(100% - 100px)";
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-weight: 400;
 	}
 	small{
 		position: absolute;
 		display: inline-block;
 		right: 18px;
 		top: 50%;
-		font-size: 12px;
+		font-size: 10px;
+		font-weight: 500;
 		color: #a53030;
+		border-color: #a53030;
+		background-color: transparent;
 		opacity: 1;
 		border: 1px solid;
 		border-radius: 2px;
 		padding: 2px 3px 1px;
 		cursor: pointer;
 		.transform(translateY(-50%) translateZ(0));
-		.transition(opacity 0.2s, transform 0.2s);
+		.transition(opacity 0.2s, background 0.2s);
 		&.select{
 			color: #50ab50;
+			border-color: #50ab50;
 			right: 54px;
 		}
 	}
@@ -172,38 +188,52 @@ a{
 		left: 0;
 		width: 100%;
 		height: 1px;
-		background-color: #d8d8d7;
+		background-color: #efefef;
 		.transform(scaleX(0));
 		.transition(transform 0.4s);
 		.transform-origin(left center);
 	}
 	&:hover{
 		opacity: 1;
-		// small{
-		// 	opacity: 0.5;
-		// 	&:hover{
-		// 		opacity: 1;
-		// 	}
-		// }
+		small{
+			// opacity: 0.5;
+			&:hover{
+				// opacity: 1;
+				// font-weight: 400;
+				background-color: #a53030;
+				color: #ffffff;
+				&.select{
+					background-color: #50ab50;
+				}
+			}
+		}
 		&:before{
 			.transform(scaleX(1));
 		}
 	}
 	&.current{
-		padding-left: 6%;
+		padding-left: 8%;
 		opacity: 1;
-		background-color: #ecfdeb;
+		background-color: #f5fff4;
+		span{
+			font-weight: 500;
+		}
 		small.select{
 			display: none;
 		}
 		&:after{
 			content: "";
 			position: absolute;
-			width: 7px;
-			top: 0;
-			left: 0px;
-			bottom: 0;
+			width: 8px;
+			height: 8px;
+			top: 50%;
+			border-radius: 50%;
+			margin-top: -4px;
+			left: 3%;
 			background: #50ab50;
+			-webkit-box-shadow: 0px 0px 11px 2px fade(#50ab50, 65%);
+			-moz-box-shadow: 0px 0px 11px 2px fade(#50ab50, 65%);
+			box-shadow: 0px 0px 11px 2px fade(#50ab50, 65%);
 		}
 	}
 }

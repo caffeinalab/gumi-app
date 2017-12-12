@@ -49,20 +49,22 @@ function onSave(){
 		email: email.value,
 	};
 
-	currentWindow.custom.insertOrUpdateSetting(ob);
+	ipcRenderer.sendSync('callSyncMethod', 'insertOrUpdateSetting', ob);
 
 	App.Router.navigate('profile-list');
 }
 
 function onDelete(){
-	currentWindow.custom.removeSetting(App.currentExtra);
+	ipcRenderer.sendSync('callSyncMethod', 'removeSetting', App.currentExtra);
 	App.Router.navigate('profile-list');
 }
 
 function addFormListeners(el){
 
 	el.querySelector('#saveButton').addEventListener( 'click', onSave );
-	el.querySelector('#deleteButton').addEventListener( 'click', onDelete );
+	if(el.querySelector('#deleteButton')){
+		el.querySelector('#deleteButton').addEventListener( 'click', onDelete );
+	}
 
 	
 
@@ -88,7 +90,7 @@ module.exports = function(){
     	};
 
 		if(App.currentExtra){
-			var settings = currentWindow.custom.getSettings();
+			var settings = ipcRenderer.sendSync('callSyncMethod', 'getSettings');
 			if(settings[App.currentExtra]){
 				opts.title = "edit profile";
 				opts.label = settings[App.currentExtra].label;

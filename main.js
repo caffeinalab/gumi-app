@@ -1,4 +1,4 @@
-const {app, Menu, Tray, BrowserWindow, nativeImage} = require('electron')
+const {app, Menu, Tray, BrowserWindow, nativeImage, ipcMain} = require('electron')
 
 const path = require('path')
 const fs = require('fs')
@@ -13,7 +13,7 @@ const settingsPath = path.join(__dirname, 'settings.json')
 const assetsDirectory = path.join(__dirname, 'assets')
 
 var settings = {}
-var currentUser = {}
+var currentUser = undefined
 
 app.dock.hide()
 
@@ -70,23 +70,36 @@ const execute = (cmd, opts, callback) => {
 
 function getGitInfo() {
   return new Promise((resolve,reject) => {
-	execute("git config --global user.name", (err, name) => {
+	execute("git config --global user.name", (err, username) => {
 		 execute("git config --global user.email", (err, email) => {
-		 	if (!_(name).isString() || !_(email).isString()) {
+		 	if (!_(username).isString() || !_(email).isString()) {
 		 		resolve({})
 		 		return false
 		 	}
+		 	username = username.replace("\n", "")
+		 	email = email.replace("\n", "")
+		 	currentUser = undefined;
 
 		 	let ob = {}
-		 	let id = Date.now()
 		 	
-		 	ob[id] = {
-				label: name.replace("\n", ""),
-				username: name.replace("\n", ""), 
-				email: email.replace("\n", "") 
-			}
+		 	for(var key in settings){
+		 		if(settings[key].username == username && settings[key].email == email){
+		 			currentUser = key
+		 			ob[key] = settings[key]
+		 			break;		
+		 		}
+		 	}
 
-			currentUser = id
+		 	if(!currentUser){
+			 	let id = Date.now()
+				currentUser = id
+			 	ob[id] = {
+					label: username,
+					username: username, 
+					email: email 
+				}
+		 	}
+
 			resolve(ob)
 		 })
 	 })
@@ -178,7 +191,9 @@ function insertOrUpdateSetting(ob) {
 }
 
 function removeSetting(key) {
-	if(setting[key] != null) delete setting[key]
+	if(settings[key] == null) return
+	delete settings[key]
+	saveSettings()
 }
 
 function getAllSettings() {
@@ -196,7 +211,7 @@ function createWindow (state) {
   // Create the browser window.
 	mainWindow = new BrowserWindow({
 		width: 300, 
-		height: 450,
+		height: 350,
 		show: false,
 		frame: false,
 		fullscreenable: false,
@@ -208,12 +223,7 @@ function createWindow (state) {
 	})
 
 	mainWindow.custom = {
-		'currentUser': currentUser,
-		'currentState': state ? state : 'profile-list',
-		'getSettings': getAllSettings,
-		'insertOrUpdateSetting': insertOrUpdateSetting,
-		'removeSetting': removeSetting,
-		'activateSetting': activateSetting
+		'currentState': state ? state : 'profile-list'
 	}
 
   // and load the index.html of the app.
@@ -243,9 +253,34 @@ function createWindow (state) {
 	// Some APIs can only be used after this event occurs.
 	app.on('ready', function() {
 		// createWindow()
+		ipcMain.on('callSyncMethod', (event, type, data) => {
+			console.log(type, data) // prints "ping"
+			switch(type){
+				case "getCurrentUser":
+					// update currentUser
+					getGitInfo()
+					event.returnValue = currentUser
+					break
+				case "getSettings":
+					event.returnValue = getAllSettings()
+					break
+				case "removeSetting":
+					removeSetting(data)
+					event.returnValue = true
+					break
+				case "activateSetting":
+					activateSetting(data)
+					event.returnValue = true
+					break
+				case "insertOrUpdateSetting":
+					insertOrUpdateSetting(data)
+					event.returnValue = true
+					break
+			}
+		})
 
-		getGitInfo()
-		.then(readSettings)
+		readSettings()
+		.then(getGitInfo)
 		.then(createTray)
 		.catch(() => {
 			console.log("First launch probably!")
@@ -254,6 +289,8 @@ function createWindow (state) {
 			.then(createTray)
 			.catch(log)
 		})
+
+
 	})
 
 	// Quit when all windows are closed.

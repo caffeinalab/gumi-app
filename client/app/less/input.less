@@ -33,7 +33,7 @@
 	padding: 0 1em;
 	width: 40%;
 	color: #6a7989;
-	font-weight: bold;
+	font-weight: 500;
 	font-size: 70.25%;
 	-webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -122,14 +122,14 @@
 }
 
 .input.error {
-	color: red;
+	color: @error-color;
 	.graphic--nao {
-		stroke: red;
+		stroke: @error-color;
 	}
 	.input__field--nao{
-		color: red;
+		color: @error-color;
 	}
 	.input__label-content{
-		color: red;
+		color: @error-color;
 	}
 }

@@ -33,6 +33,7 @@
 			if(require){
 				var electron = require('electron');
 				currentWindow = electron.remote.getCurrentWindow();			
+				ipcRenderer = electron.ipcRenderer;
 			}else {
 				currentWindow = {};
 				currentWindow.custom = {

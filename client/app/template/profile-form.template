@@ -30,7 +30,7 @@
 			    </svg>
 			</span>
 			<% if(!isNew){  %>
-				<small id="deleteButton">DELETE IT</small>
+				<small id="deleteButton">DELETE</small>
 			<% } %>
 		</div>
 	</div>
