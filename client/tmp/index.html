@@ -100,6 +100,9 @@
 					}
 				};
 				ipcRenderer = {
+					on: function(method, type, data){
+						console.log(type,data);
+					},
 					sendSync: function(method, type, data){
 						console.log(type,data);
 						switch(type){

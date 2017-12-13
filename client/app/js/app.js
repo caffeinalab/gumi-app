@@ -34,9 +34,13 @@ window.App = {
 		}
 
 		window.addEventListener( 'resize', this.onResize);
+		ipcRenderer.on('changeTheme', App.changeTheme);
+
 		this.onResize();
 	},
-	
+	changeTheme: function(e, theme){
+		document.body.setAttribute('data-state', theme);
+	},
 	onChangePageVisibility: function(){
 		App.pageVisibility = !Utils.pageIsHidden();
 	},

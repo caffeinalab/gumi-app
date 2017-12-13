@@ -6,7 +6,7 @@ const url = require('url')
 const child_process	= require('child_process')
 const _ = require('underscore')
 
-const DEBUG = false;
+const DEBUG = false
 const CWD 			= process.cwd()
 const execOpts = { cwd: CWD, stdio:[0,1,2], sync: true } // stdio is only needed for execSync|spawn
 const settingsPath = path.join(__dirname, 'settings.json')
@@ -14,6 +14,7 @@ const assetsDirectory = path.join(__dirname, 'assets')
 
 var settings = {}
 var currentUser = undefined
+var defaultTheme = 'light-theme'  //  or 'dark-theme'
 
 app.dock.hide()
 
@@ -72,33 +73,33 @@ function getGitInfo() {
   return new Promise((resolve,reject) => {
 	execute("git config --global user.name", (err, username) => {
 		 execute("git config --global user.email", (err, email) => {
-		 	if (!_(username).isString() || !_(email).isString()) {
-		 		resolve({})
-		 		return false
-		 	}
-		 	username = username.replace("\n", "")
-		 	email = email.replace("\n", "")
-		 	currentUser = undefined;
+			if (!_(username).isString() || !_(email).isString()) {
+				resolve({})
+				return false
+			}
+			username = username.replace("\n", "")
+			email = email.replace("\n", "")
+			currentUser = undefined
 
-		 	let ob = {}
-		 	
-		 	for(var key in settings){
-		 		if(settings[key].username == username && settings[key].email == email){
-		 			currentUser = key
-		 			ob[key] = settings[key]
-		 			break;		
-		 		}
-		 	}
+			let ob = {}
+			
+			for(var key in settings.profiles){
+				if(settings.profiles[key].username == username && settings.profiles[key].email == email){
+					currentUser = key
+					ob[key] = settings.profiles[key]
+					break	
+				}
+			}
 
-		 	if(!currentUser){
-			 	let id = Date.now()
+			if(!currentUser){
+				let id = Date.now()
 				currentUser = id
-			 	ob[id] = {
+				ob[id] = {
 					label: username,
 					username: username, 
 					email: email 
 				}
-		 	}
+			}
 
 			resolve(ob)
 		 })
@@ -108,10 +109,10 @@ function getGitInfo() {
 
 function setGitInfo(key) {
 	return new Promise((resolve,reject) => {
-		if (!settings[key]) return reject()
+		if (!settings.profiles[key]) return reject()
 
-		execute(`git config --global user.name \"${settings[key].username}\"`, (name) => {
-			execute(`git config --global user.email \"${settings[key].email}\"`, (email) => {
+		execute(`git config --global user.name \"${settings.profiles[key].username}\"`, (name) => {
+			execute(`git config --global user.email \"${settings.profiles[key].email}\"`, (email) => {
 				currentUser = key
 
 				getGitInfo()
@@ -121,6 +122,10 @@ function setGitInfo(key) {
 		})
 	})
 }
+
+/////////////
+///// UI ////
+/////////////
 
 const getWindowPosition = () => {
 	const windowBounds = mainWindow.getBounds()
@@ -150,10 +155,50 @@ const showWindow = () => {
 	mainWindow.focus()
 }
 
+const getTrayMenu = function () {
+	return Menu.buildFromTemplate([
+		{
+			label: 'Current profile:',
+			enabled: false
+		},
+		{
+			label: settings.profiles[currentUser].label,
+			enabled: false
+		},
+		{
+			type: 'separator'
+		},
+		{
+			label: 'Select theme:',
+			enabled: false
+		},
+		{
+			type: 'radio',
+			label : 'Light theme',
+			checked: getCurrentTheme() == 'light-theme',
+			click: changeTheme 
+		},
+		{
+			type: 'radio',
+			label : 'Dark theme',
+			checked: getCurrentTheme() == 'dark-theme',
+			click: changeTheme 
+		}, 
+		{
+			type :'separator'
+		},   
+		{
+			label: 'Quit',
+			click() {  app.quit() }             
+		}
+	])
+}
+
+
 function createTray() {
 
 	tray = new Tray(path.join(assetsDirectory, 'logoTemplate.png'))
-	tray.on('right-click', toggleWindow)
+	tray.on('right-click', () => { tray.popUpContextMenu( getTrayMenu() ) } )
 	tray.on('double-click', toggleWindow)
 	tray.on('click', toggleWindow)
 
@@ -161,6 +206,45 @@ function createTray() {
 
 	return true
 }
+
+function createWindow (state) {
+	// Create the browser window.
+	mainWindow = new BrowserWindow({
+		width: 300, 
+		height: 350,
+		show: false,
+		frame: false,
+		fullscreenable: false,
+		resizable: false,
+		transparent: false,
+		webPreferences: {
+			backgroundThrottling: false
+		}
+	})
+
+	mainWindow.custom = {
+		'currentState': state ? state : 'profile-list',
+		'theme': getCurrentTheme()
+	}
+
+	// and load the index.html of the app.
+	mainWindow.loadURL(url.format({
+		pathname: path.join(__dirname, '/client/public/index.html'),
+		protocol: 'file:',
+		slashes: true
+	}))
+
+	// Hide the window when it loses focus
+	mainWindow.on('blur', () => {
+		if (!mainWindow.webContents.isDevToolsOpened()) {
+		  mainWindow.hide()
+		}
+	})
+}
+
+/////////////
+//// APP ////
+/////////////
 
 function readSettings() {
 	return new Promise((resolve, reject) => {
@@ -181,72 +265,46 @@ function saveSettings() {
 	fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 4), 'utf-8') 
   }
   catch(e) { 
-  	alert('Failed to save the file !') 
+	alert('Failed to save the file !') 
   }
 }
 
 function insertOrUpdateSetting(ob) {
-	_(settings).extend(ob)
+	_(settings.profiles).extend(ob)
 	saveSettings()
 }
 
 function removeSetting(key) {
-	if(settings[key] == null) return
-	delete settings[key]
+	if(settings.profiles[key] == null) return
+	delete settings.profiles[key]
 	saveSettings()
 }
 
 function getAllSettings() {
-	return settings
-	// _(settings).each((s, i) => {
-	// 	if (i === currentUser) _(s).extend({ checked: true })
-	// })
+	return settings.profiles
 }
 
 function activateSetting(key) {
-	if (settings[key]) setGitInfo(key)
+	if (settings.profiles[key]) setGitInfo(key)
 }
 
-function createWindow (state) {
-  // Create the browser window.
-	mainWindow = new BrowserWindow({
-		width: 300, 
-		height: 350,
-		show: false,
-		frame: false,
-		fullscreenable: false,
-		resizable: false,
-		transparent: false,
-		webPreferences: {
-			backgroundThrottling: false
-		}
-	})
+function getCurrentTheme(){
+	return settings.theme ? settings.theme : defaultTheme
+}
 
-	mainWindow.custom = {
-		'currentState': state ? state : 'profile-list',
-		'theme': 'dark-theme' // or other string
+function changeTheme(){
+	if(getCurrentTheme() == 'light-theme'){
+		settings.theme = 'dark-theme'
+	}else{
+		settings.theme = 'light-theme'
 	}
-
-  // and load the index.html of the app.
-	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, '/client/public/index.html'),
-		protocol: 'file:',
-		slashes: true
-	}))
-
-	// Hide the window when it loses focus
-	mainWindow.on('blur', () => {
-		if (!mainWindow.webContents.isDevToolsOpened()) {
-		  mainWindow.hide()
-		}
-	})
+	mainWindow.webContents.send('changeTheme' , settings.theme)
+	saveSettings()
 }
 
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-
 
 (function() {
 	// This method will be called when Electron has finished
@@ -307,8 +365,6 @@ function createWindow (state) {
 		// On OS X it's common to re-create a window in the app when the
 		// dock icon is clicked and there are no other windows open.
 		if (mainWindow === null) {
-
-			console.log('in active')
 			createWindow()
 			createTray()
 		}
