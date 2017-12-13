@@ -24,7 +24,6 @@ a{
 	width: 100%;
 	height: 100%;
 }
-
 ._bottom{
 	position: absolute;
 	bottom: 0px;
@@ -83,7 +82,6 @@ a{
 		height: 77px;
 		background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 65%, rgba(255, 255, 255, 0) 100%);
 	}
-
 	.content{
 		position: relative;
 		width: 100%;
@@ -166,10 +164,9 @@ a{
 		font-size: 10px;
 		font-weight: 500;
 		color: #a53030;
-		border-color: #a53030;
 		background-color: transparent;
 		opacity: 1;
-		border: 1px solid;
+		border: 1px solid #a53030;
 		border-radius: 2px;
 		padding: 2px 3px 1px;
 		cursor: pointer;
@@ -235,5 +232,54 @@ a{
 			-moz-box-shadow: 0px 0px 11px 2px fade(#50ab50, 65%);
 			box-shadow: 0px 0px 11px 2px fade(#50ab50, 65%);
 		}
+	}
+}
+
+.dark-theme{
+	background: #353535;
+	color: white;
+	._bottom{
+		background: #353535;
+	}
+	.button{
+		background: #66C3FF;
+	}
+	#panelTransition{
+		background: #66C3FF;
+	}
+	.page{
+		&:before{
+			top: 36px;
+			background: linear-gradient(to bottom, rgba(53, 53, 53, 1) 0%,rgba(53, 53, 53, 0) 100%);
+		}
+		&:after{
+			bottom: 0px;
+			height: 77px;
+			background: linear-gradient(to top, rgba(53, 53, 53, 1) 0%, rgba(53, 53, 53, 1) 65%, rgba(53, 53, 53, 0) 100%);
+		}
+		h1{
+			color: #66C3FF;
+		}
+	}
+	.singleProfile{
+		&:nth-child(even) {
+		    background-color: #3a3a3a;
+		}
+
+		&.current{
+			background: #424242;
+		}
+		&:before{
+			background: #5f5f5f;
+		}
+	}
+	.input__field--nao{
+		color: white;
+	}
+	.input__field--nao:focus + .input__label--nao, .input--filled .input__label--nao{
+		color: #9da8b2;
+	}
+	.input__field--nao:focus ~ .graphic--nao, .input--filled .graphic--nao{
+		stroke: #9da8b2;
 	}
 }

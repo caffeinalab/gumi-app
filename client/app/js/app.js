@@ -15,7 +15,9 @@ window.App = {
 	init: function () {
 		// Request Animation Frame
 		App.Raf.start();
-
+		if(currentWindow.custom.theme){
+			document.body.setAttribute('data-state', currentWindow.custom.theme);
+		}
 		// History
 		this.instance = App.Views.Wrapper;
 		App.Router.init();

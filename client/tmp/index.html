@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="./css/main.css">
 		
 	</head>
-	<body>
+	<body class="dark-theme">
 		<div id="wrapper" class="-fullSize"></div>
 		<div id="panelTransition" class="-fullSize"></div>
 
@@ -90,28 +90,52 @@
 				var electron = require('electron');
 				currentWindow = electron.remote.getCurrentWindow();			
 				ipcRenderer = electron.ipcRenderer;
-			}else {
-				currentWindow = {};
-				currentWindow.custom = {
-					'currentUser': '21312',
-					'currentState': 'profile-list',
-					'getSettings': function(){
-						return {
-							"21312": {
-								"label": 'personal',
-								"username":"lavolpecheprogramma",
-								"email" : "parziale.alberto@gmail.com"
-							},
-							"1232142": {
-								"label": 'caffeina',
-								"username":"Alberto Parziale",
-								"email" : "alberto.parziale@caffeina.com"
-							}
-						};
-					},
-					'insertOrUpdateSetting': function(){console.log('insertOrUpdateSetting called')},
-					'removeSetting': function(){console.log('removeSetting called')},
-					'activateSetting': function(){console.log('activateSetting called')}
+			}else{
+				currentUser = undefined;
+				settings = undefined;
+				currentWindow = {
+					custom: {
+						currentState: "profile-list",
+						theme: 'dark-theme'
+					}
+				};
+				ipcRenderer = {
+					sendSync: function(method, type, data){
+						console.log(type,data);
+						switch(type){
+							case "getCurrentUser":
+								if(!currentUser){
+									currentUser = "1513092352851"
+								}
+								// update currentUser
+								return currentUser;
+								break
+							case "getSettings":
+								if(!settings){
+									settings = {
+										    "1513092352851": {
+										        "label": "Alberto Parziale",
+										        "username": "Alberto Parziale",
+										        "email": "alberto.parziale@caffeina.com"
+										    }
+										};
+								}
+								return settings;
+								break
+							case "removeSetting":
+								if(settings[data]){
+									delete settings[data];
+								}
+								return true;
+								break
+							case "activateSetting":
+								currentUser = data;
+								break
+							case "insertOrUpdateSetting":
+								_(settings).extend(data);
+								break
+						}
+					}
 				};
 			}
 		</script>

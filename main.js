@@ -223,7 +223,8 @@ function createWindow (state) {
 	})
 
 	mainWindow.custom = {
-		'currentState': state ? state : 'profile-list'
+		'currentState': state ? state : 'profile-list',
+		'theme': 'dark-theme' // or other string
 	}
 
   // and load the index.html of the app.
