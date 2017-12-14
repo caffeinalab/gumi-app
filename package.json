@@ -1,21 +1,23 @@
 {
-  "name": "user-changer",
+  "name": "gumi",
   "version": "1.0.0",
   "description": "Changing the Git user has never been so simple.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icon-app.icns --ignore='settings.json|gulpfile.js|client\/app|client\/tmp|client\/node_modules|client\/gulpfile.js|client\/package.js' --prune=true --out=release-builds"
+    "build": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icon-app.icns --ignore='settings.json|gulpfile.js|client/app|client/tmp|client/node_modules|client/gulpfile.js|client/package.js' --prune=true --out=release-builds",
+    "dmg": "electron-installer-dmg ./release-builds/gumi-darwin-x64/gumi.app gumi-app --out=release-builds --overwrite --icon=assets/icon-app.icns"
   },
-  "author": { 
-    "name" : "Alberto Parziale",
-    "email" : "parziale.alberto@gmail.com"
+  "author": {
+    "name": "Alberto Parziale",
+    "email": "parziale.alberto@gmail.com"
   },
   "contributors": [
     "Ani Sinanaj"
   ],
   "devDependencies": {
     "electron": "~1.7.8",
+    "electron-installer-dmg": "^0.2.1",
     "electron-packager": "^10.1.0"
   },
   "dependencies": {
