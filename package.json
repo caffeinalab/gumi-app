@@ -1,23 +1,22 @@
 {
-  "name": "electron-quick-start",
+  "name": "user-changer",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Changing the Git user has never been so simple.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . --overwrite --platform=darwin --arch=x64 --ignore='/client\/app|client\/tmp|client\/node_modules|client\/gulpfile.js|client\/package.js|settings.json/' --prune=true --out=release-builds"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+  "author": { 
+    "name" : "Alberto Parziale",
+    "email" : "parziale.alberto@gmail.com"
+  },
+  "contributors": [
+    "Ani Sinanaj"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "~1.7.8"
+    "electron": "~1.7.8",
+    "electron-packager": "^10.1.0"
   },
   "dependencies": {
     "underscore": "^1.8.3"

@@ -186,6 +186,15 @@ const getTrayMenu = function () {
 		}, 
 		{
 			type :'separator'
+		},
+		{
+			type: 'checkbox',
+			label : 'Start at login',
+			checked: getAutoStart() == true,
+			click: toggleAutoStart 
+		},
+		{
+			type :'separator'
 		},   
 		{
 			label: 'Quit',
@@ -251,10 +260,10 @@ function readSettings() {
 		try {
 			settings = fs.readFileSync(settingsPath, 'utf-8')
 			settings = JSON.parse(settings)
-			console.log('Loaded file:' + settingsPath, settings)
+			if (DEBUG) console.log('Loaded file:' + settingsPath, settings)
 			resolve(settings)
 		} catch (err) {
-			console.log('Error reading the file: ' + JSON.stringify(err))
+			if (DEBUG) console.log('Error reading the file: ' + JSON.stringify(err))
 			reject(null)
 		}
 	})
@@ -270,12 +279,13 @@ function saveSettings() {
 }
 
 function insertOrUpdateSetting(ob) {
+	if(!settings.profiles) { settings.profiles = {} }
 	_(settings.profiles).extend(ob)
 	saveSettings()
 }
 
 function removeSetting(key) {
-	if(settings.profiles[key] == null) return
+	if(!settings.profiles || settings.profiles[key] == null) return
 	delete settings.profiles[key]
 	saveSettings()
 }
@@ -288,11 +298,11 @@ function activateSetting(key) {
 	if (settings.profiles[key]) setGitInfo(key)
 }
 
-function getCurrentTheme(){
+function getCurrentTheme() {
 	return settings.theme ? settings.theme : defaultTheme
 }
 
-function changeTheme(){
+function changeTheme() {
 	if(getCurrentTheme() == 'light-theme'){
 		settings.theme = 'dark-theme'
 	}else{
@@ -302,6 +312,23 @@ function changeTheme(){
 	saveSettings()
 }
 
+function getAutoStart() {
+	return settings.autostart ? settings.autostart : false
+}
+
+function toggleAutoStart() {
+	settings.autostart = !getAutoStart();
+	setAutoStart()
+}
+
+function setAutoStart() {
+
+	app.setLoginItemSettings({
+		openAtLogin: !! settings.autostart,
+	});
+
+	saveSettings()
+}
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
@@ -313,7 +340,7 @@ function changeTheme(){
 	app.on('ready', function() {
 		// createWindow()
 		ipcMain.on('callSyncMethod', (event, type, data) => {
-			console.log(type, data) // prints "ping"
+			if (DEBUG) console.log(type, data)
 			switch(type){
 				case "getCurrentUser":
 					// update currentUser
@@ -341,11 +368,13 @@ function changeTheme(){
 		readSettings()
 		.then(getGitInfo)
 		.then(createTray)
+		.then(setAutoStart)
 		.catch(() => {
-			console.log("First launch probably!")
+			if (DEBUG) console.log("First launch probably!")
 			return getGitInfo()
 			.then(insertOrUpdateSetting)
 			.then(createTray)
+			.then(setAutoStart)
 			.catch(log)
 		})
 

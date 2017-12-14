@@ -369,6 +369,13 @@ function onInputBlur(ev) {
 	}
 }
 
+function onKeyup(e) {
+	if (e.keyCode == 13) {
+		onSave();
+		return;
+	}
+}
+
 function onSave() {
 	var label = document.getElementById('label');
 	var username = document.getElementById('username');
@@ -419,6 +426,7 @@ function onDelete() {
 
 function addFormListeners(el) {
 
+	window.addEventListener('keyup', onKeyup);
 	el.querySelector('#saveButton').addEventListener('click', onSave);
 	if (el.querySelector('#deleteButton')) {
 		el.querySelector('#deleteButton').addEventListener('click', onDelete);
@@ -463,6 +471,7 @@ module.exports = function () {
 	}
 
 	function remove() {
+		window.removeEventListener('keyup', onKeyup);
 		App.currentExtra = undefined;
 		if (Tmp) {
 			Tmp.stopTween();

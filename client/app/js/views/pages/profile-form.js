@@ -11,6 +11,13 @@ function onInputBlur( ev ) {
 	}
 }
 
+function onKeyup(e){
+	if (e.keyCode == 13) {
+		onSave();
+		return;
+	}
+}
+
 function onSave(){
 	var label = document.getElementById('label');
 	var username = document.getElementById('username');
@@ -61,12 +68,11 @@ function onDelete(){
 
 function addFormListeners(el){
 
+	window.addEventListener( 'keyup', onKeyup );
 	el.querySelector('#saveButton').addEventListener( 'click', onSave );
 	if(el.querySelector('#deleteButton')){
 		el.querySelector('#deleteButton').addEventListener( 'click', onDelete );
 	}
-
-	
 
 	[].slice.call( el.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
 		// in case the input is already filled..
@@ -109,6 +115,7 @@ module.exports = function(){
 	
 
 	function remove(){
+		window.removeEventListener( 'keyup', onKeyup );
 		App.currentExtra = undefined;
 		if(Tmp){
 			Tmp.stopTween();
