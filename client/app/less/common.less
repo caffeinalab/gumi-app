@@ -118,14 +118,39 @@ a{
 	}
 	#deleteButton{
 		display: block;
-		width: 150px;
+		width: 100px;
 		text-align: center;
 		margin: 20px auto;
-		color: @error-color;
 		cursor: pointer;
 	}
 	#saveButton{
 		border-left: 1px solid;
+	}
+}
+
+small{
+	display: inline-block;
+	font-size: 10px;
+	font-weight: 500;
+	color: #a53030;
+	background-color: transparent;
+	opacity: 1;
+	border: 1px solid #a53030;
+	border-radius: 2px;
+	padding: 2px 3px 1px;
+	cursor: pointer;
+	.transition(opacity 0.2s, background 0.2s);
+	&.select{
+		color: #50ab50;
+		border-color: #50ab50;
+		right: 54px;
+	}
+	&:hover{
+		background-color: #a53030;
+		color: #ffffff;
+		&.select{
+			background-color: #50ab50;
+		}
 	}
 }
 
@@ -156,28 +181,14 @@ a{
 		text-overflow: ellipsis;
 		font-weight: 400;
 	}
+
 	small{
 		position: absolute;
-		display: inline-block;
-		right: 18px;
 		top: 50%;
-		font-size: 10px;
-		font-weight: 500;
-		color: #a53030;
-		background-color: transparent;
-		opacity: 1;
-		border: 1px solid #a53030;
-		border-radius: 2px;
-		padding: 2px 3px 1px;
-		cursor: pointer;
+		right: 18px;
 		.transform(translateY(-50%) translateZ(0));
-		.transition(opacity 0.2s, background 0.2s);
-		&.select{
-			color: #50ab50;
-			border-color: #50ab50;
-			right: 54px;
-		}
 	}
+	
 	&:before{
 		content:"";
 		position: absolute;
@@ -192,18 +203,6 @@ a{
 	}
 	&:hover{
 		opacity: 1;
-		small{
-			// opacity: 0.5;
-			&:hover{
-				// opacity: 1;
-				// font-weight: 400;
-				background-color: #a53030;
-				color: #ffffff;
-				&.select{
-					background-color: #50ab50;
-				}
-			}
-		}
 		&:before{
 			.transform(scaleX(1));
 		}

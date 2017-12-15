@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icon-app.icns --ignore='settings.json|gulpfile.js|client/app|client/tmp|client/node_modules|client/gulpfile.js|client/package.js' --prune=true --out=release-builds",
+    "build": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icon-app.icns --ignore='settings.json|gulpfile.js|node_modules/*|client/app|client/tmp|client/node_modules|client/gulpfile.js|client/package.js' --prune=true --out=release-builds",
     "dmg": "electron-installer-dmg ./release-builds/gumi-darwin-x64/gumi.app gumi-app --out=release-builds --overwrite --icon=assets/icon-app.icns"
   },
   "author": {
