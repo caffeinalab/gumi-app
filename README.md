@@ -18,20 +18,21 @@ You can download it at [https://gumiapp.com/](https://gumiapp.com/)
 	- MacOS X 
 
 ## How to contribute to gUmi
-#### **Do you want gUmi for Windows or Linux?**
+
+#### **Windows and Linux support**
 We intend to build the app for other platforms (Linux, Windows) as well. If you want, you can help us to build and test the app on this platforms!
 
-#### **Did you find a bug?**
+#### **Reporting bugs**
 * Open a GitHub issue 
 
-#### **Did you write a patch that fixes a bug?**
+#### **Contributing with patches and bug fixes**
 * Open a new GitHub pull request with the patch.
 * Ensure the PR description clearly describes the problem and solution.
 
-#### **Do you have questions about the source code?**
+#### **Questions about the source code**
 * Ask any question about gUmi at [dev@caffeina.com](mailto:dev@caffeina.com).
 
 ## License
-	MIT
+MIT
 
 Thanks! :heart: :heart: :heart:
