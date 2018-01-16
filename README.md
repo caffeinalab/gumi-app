@@ -12,24 +12,30 @@ Check out the video to see it in action:
 You can download it at [https://gumiapp.com/](https://gumiapp.com/)
 
 ## Dependencies
-	- [Electron](https://github.com/electron/electron)
+
+- [Electron](https://github.com/electron/electron)
 
 ## Platform support
-	- MacOS X 
+
+- MacOS X 
 
 ## How to contribute to gUmi
 
 #### **Windows and Linux support**
+
 We intend to build the app for other platforms (Linux, Windows) as well. If you want, you can help us to build and test the app on this platforms!
 
 #### **Reporting bugs**
+
 * Open a GitHub issue 
 
 #### **Contributing with patches and bug fixes**
+
 * Open a new GitHub pull request with the patch.
 * Ensure the PR description clearly describes the problem and solution.
 
 #### **Questions about the source code**
+
 * Ask any question about gUmi at [dev@caffeina.com](mailto:dev@caffeina.com).
 
 ## License
