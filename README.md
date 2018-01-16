@@ -12,7 +12,7 @@ Check out the video to see it in action:
 You can download it at [https://gumiapp.com/](https://gumiapp.com/)
 
 ## Dependencies
-	- Electron
+	- [Electron](https://github.com/electron/electron)
 
 ## Platform support
 	- MacOS X 
