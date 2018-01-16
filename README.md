@@ -1,9 +1,12 @@
+<img src="/assets/logoTemplate@4x.png"/>
+
 ## gUMI - Git user manager interface
 
 gUmi is a simple tool that can be useful for people that use many different git platforms.
 You can manage infinite git profiles with one click and select which profile to use to commit and push your code changes.
 
 Check out the video to see it in action:
+
 [![Tutorial](https://img.youtube.com/vi/ojgabn9dNss/0.jpg)](https://www.youtube.com/watch?v=ojgabn9dNss)
 
 You can download it at [https://gumiapp.com/](https://gumiapp.com/)
