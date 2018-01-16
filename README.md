@@ -23,7 +23,7 @@ You can download it at [https://gumiapp.com/](https://gumiapp.com/)
 
 #### **Windows and Linux support**
 
-We intend to build the app for other platforms (Linux, Windows) as well. If you want, you can help us to build and test the app on this platforms!
+We intend to build the app for other platforms (Linux, Windows) as well. If you want, you can help us build and test the app on these platforms.
 
 #### **Reporting bugs**
 
