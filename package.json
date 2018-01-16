@@ -10,10 +10,15 @@
   },
   "author": {
     "name": "Alberto Parziale",
-    "email": "parziale.alberto@gmail.com"
+    "email": "parziale.alberto@gmail.com",
+    "url": "https://lavolpechevola.com/"
   },
   "contributors": [
-    "Ani Sinanaj"
+    {
+      "name": "Ani Sinanaj",
+      "email": "sinanajani@outlook.com",
+      "url": "https://progress44.com/"
+    }
   ],
   "devDependencies": {
     "electron": "~1.7.8",
