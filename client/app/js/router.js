@@ -31,7 +31,24 @@ function navigate(state){
 	}
 };
 
+function refresh(){
+	if(!currentState){
+		return
+	}
+
+	switch(currentState){
+		case 'profile-list':
+			goToProfileList();
+			break;
+		case 'profile-form':
+			goToProfileForm();
+			break;
+		default:
+	}
+}
+
 module.exports = {
 	init: init,
-	navigate: navigate
+	navigate: navigate,
+	refresh: refresh
 };

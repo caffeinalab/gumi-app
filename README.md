@@ -9,7 +9,7 @@ Check out the video to see it in action:
 
 [![Tutorial](https://img.youtube.com/vi/ojgabn9dNss/0.jpg)](https://www.youtube.com/watch?v=ojgabn9dNss)
 
-You can download it at [https://gumiapp.com/](https://gumiapp.com/)
+You can download it [here](/release-builds)
 
 ## Dependencies
 

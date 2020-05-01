@@ -29,62 +29,9 @@
 		</script>
 
 		<script type="text/javascript">
-			var require = require || undefined;
-			if(require){
-				var electron = require('electron');
-				currentWindow = electron.remote.getCurrentWindow();			
-				ipcRenderer = electron.ipcRenderer;
-			}else{
-				currentUser = undefined;
-				settings = undefined;
-				currentWindow = {
-					custom: {
-						currentState: "profile-list",
-						theme: 'dark-theme'
-					}
-				};
-				ipcRenderer = {
-					on: function(method, type, data){
-						console.log(type,data);
-					},
-					sendSync: function(method, type, data){
-						console.log(type,data);
-						switch(type){
-							case "getCurrentUser":
-								if(!currentUser){
-									currentUser = "1513092352851"
-								}
-								// update currentUser
-								return currentUser;
-								break
-							case "getSettings":
-								if(!settings){
-									settings = {
-										    "1513092352851": {
-										        "label": "Alberto Parziale",
-										        "username": "Alberto Parziale",
-										        "email": "alberto.parziale@caffeina.com"
-										    }
-										};
-								}
-								return settings;
-								break
-							case "removeSetting":
-								if(settings[data]){
-									delete settings[data];
-								}
-								return true;
-								break
-							case "activateSetting":
-								currentUser = data;
-								break
-							case "insertOrUpdateSetting":
-								_(settings).extend(data);
-								break
-						}
-					}
-				};
-			}
+			var electron = require('electron');
+			currentWindow = electron.remote.getCurrentWindow();			
+			ipcRenderer = electron.ipcRenderer;
 		</script>
 
 		<!--build:js ./js/app.js -->

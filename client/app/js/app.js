@@ -35,11 +35,15 @@ window.App = {
 
 		window.addEventListener( 'resize', this.onResize);
 		ipcRenderer.on('changeTheme', App.changeTheme);
+		ipcRenderer.on('changeUser', App.changeUser);
 
 		this.onResize();
 	},
 	changeTheme: function(e, theme){
 		document.body.setAttribute('data-state', theme);
+	},
+	changeUser: function(){
+		App.Router.refresh()
 	},
 	onChangePageVisibility: function(){
 		App.pageVisibility = !Utils.pageIsHidden();
