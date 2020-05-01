@@ -448,7 +448,8 @@ function setAutoStart() {
     })
 
     readSettings()
-			.then(getGitInfo)
+      .then(getGitInfo)
+      .then(insertOrUpdateSetting)
 			.then(checkIfRightUser)
       .then(createTray)
       .then(setAutoStart)
