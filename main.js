@@ -6,7 +6,7 @@ const url = require('url')
 const child_process	= require('child_process')
 const _ = require('underscore')
 
-const DEBUG = true
+const DEBUG = false
 const CWD = process.cwd()
 const execOpts = { cwd: CWD, stdio: [0, 1, 2], sync: true } // stdio is only needed for execSync|spawn
 const settingsPath = path.join(app.getPath('userData'), 'settings.json')
@@ -124,9 +124,12 @@ function setGitInfo(key) {
 }
 
 function checkIfRightUser() {
-	if( settings.backToPreviousUser && settings.previousUser){
-			setPreviousUser()
-	}
+  return new Promise((resolve, reject) => {
+    if( settings.backToPreviousUser && settings.previousUser){
+        setPreviousUser()
+    }
+    resolve();
+  })
 }
 
 // ///////////
