@@ -12,11 +12,10 @@ const execOpts = { cwd: CWD, stdio: [0, 1, 2], sync: true } // stdio is only nee
 const settingsPath = path.join(app.getPath('userData'), 'settings.json')
 const assetsDirectory = path.join(__dirname, 'assets')
 
+const defaultTheme = 'light-theme'  //  or 'dark-theme'
 let settings = {}
 let currentUser = undefined
-let previousUser = undefined
-const autoSwitchTimeout = undefined
-const defaultTheme = 'light-theme'  //  or 'dark-theme'
+let autoSwitchTimeout = undefined
 
 app.dock.hide()
 
@@ -124,6 +123,12 @@ function setGitInfo(key) {
   })
 }
 
+function checkIfRightUser() {
+	if( settings.backToPreviousUser && settings.previousUser){
+			setPreviousUser()
+	}
+}
+
 // ///////////
 // /// UI ////
 // ///////////
@@ -183,8 +188,8 @@ const getTrayMenu = function() {
     {
       type: 'radio',
       label: '1 min',
-      checked: settings.temporarySwitch === 1 * minute,
-      click: () => changeTemporarySwitch(1 * minute)
+      checked: settings.temporarySwitch === minute,
+      click: () => changeTemporarySwitch(minute)
     },
     {
       type: 'radio',
@@ -272,7 +277,7 @@ function createWindow(state) {
     transparent: false,
     webPreferences: {
       nodeIntegration: true,
-      backgroundThrottling: false
+      backgroundThrottling: false,
     }
   })
 
@@ -342,16 +347,18 @@ function activateSetting(key) {
   if (!settings.profiles[key]) {
     return
   }
-  if (autoSwitchTimeout) clearTimeout(autoSwitchTimeout)
-
-  previousUser = currentUser
+  if (autoSwitchTimeout) {
+		clearTimeout(autoSwitchTimeout)
+	}
+	
+	settings.backToPreviousUser = false
+  settings.previousUser = currentUser
   setGitInfo(key)
 
   if (settings.temporarySwitch) {
-    setTimeout(() => {
-			setGitInfo(previousUser)
-			notifyUserChange()
-    }, settings.temporarySwitch)
+		settings.backToPreviousUser = Date.now() + settings.temporarySwitch
+		autoSwitchTimeout = setTimeout(setPreviousUser, settings.temporarySwitch)
+		saveSettings()
   }
 }
 
@@ -359,6 +366,13 @@ function getCurrentTheme() {
   return settings.theme ? settings.theme : defaultTheme
 }
 
+function setPreviousUser() {
+	setGitInfo(settings.previousUser)
+	notifyUserChange()
+	settings.backToPreviousUser = false
+	settings.previousUser = false
+	saveSettings()
+}
 function changeTheme() {
   if (getCurrentTheme() == 'light-theme') {
     settings.theme = 'dark-theme'
@@ -375,7 +389,7 @@ function changeTemporarySwitch(value) {
 }
 
 function notifyUserChange(){
-	mainWindow.webContents.send('changeUser')
+	mainWindow.webContents.send('changeUser', settings.profiles[currentUser].label)
 }
 
 function getAutoStart() {
@@ -431,7 +445,8 @@ function setAutoStart() {
     })
 
     readSettings()
-      .then(getGitInfo)
+			.then(getGitInfo)
+			.then(checkIfRightUser)
       .then(createTray)
       .then(setAutoStart)
       .catch(() => {

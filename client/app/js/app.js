@@ -22,6 +22,15 @@ window.App = {
 		this.instance = App.Views.Wrapper;
 		App.Router.init();
 
+		const current = ipcRenderer.sendSync('callSyncMethod', 'getCurrentUser')
+		const profiles = ipcRenderer.sendSync('callSyncMethod', 'getSettings')
+		
+		if(profiles[current].label){
+			new Notification('gUmi', {
+				title: "User",
+				body: "Current user is: " + profiles[current].label
+			});
+		}
 		// Event Listeners to propagate
 		this.addEventListeners();
 	},
@@ -42,8 +51,12 @@ window.App = {
 	changeTheme: function(e, theme){
 		document.body.setAttribute('data-state', theme);
 	},
-	changeUser: function(){
+	changeUser: function(e, user){
 		App.Router.refresh()
+		new Notification('gUmi', {
+			title: "Switch user",
+			body: "Current user is " + user
+		});
 	},
 	onChangePageVisibility: function(){
 		App.pageVisibility = !Utils.pageIsHidden();
