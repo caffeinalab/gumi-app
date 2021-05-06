@@ -26,6 +26,6 @@
     "electron-packager": "^14.2.1"
   },
   "dependencies": {
-    "underscore": "^1.8.3"
+    "underscore": "^1.12.1"
   }
 }
